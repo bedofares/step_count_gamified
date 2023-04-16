@@ -1,12 +1,5 @@
-import React, { useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  BackHandler,
-  Alert,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, BackHandler, Alert } from "react-native";
 import {
   SafeAreaProvider,
   SafeAreaView,
@@ -16,21 +9,111 @@ import { StatusBar } from "expo-status-bar";
 import { Provider as PaperProvider, Appbar, Avatar } from "react-native-paper";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import StepCounter from "../Components/stepCounter";
+import Points from "../Components/Points";
+import LeaderBoard from "../Components/LeaderBoard";
+import Badges from "../Components/Badges";
+import Community from "../Components/Community";
 import { NavigationContainer } from "@react-navigation/native";
-import { StackActions } from "@react-navigation/native";
 
 import {
-  SimpleLineIcons,
   MaterialIcons,
   FontAwesome5,
-  MaterialCommunityIcons,
   FontAwesome,
   Ionicons,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
-export default function Activity({ route, navigation }) {
+export default function Activity({ navigation }) {
+  const [stepData, setStepData] = useState(0);
+  const badges = [
+    {
+      name: "1000 steps",
+      steps: 1000,
+      img: require("../../assets/fitbit.jpg"),
+      unlocked: stepData >= 1000 ? true : false,
+      points: 300,
+    },
+    {
+      name: "3000 steps",
+      steps: 3000,
+      img: require("../../assets/badges-daily-100000.png"),
+      unlocked: stepData >= 3000 ? true : false,
+      points: 600,
+    },
+    {
+      name: "5000 steps",
+      steps: 5000,
+      img: require("../../assets/Badges_Daily_35000.png"),
+      unlocked: stepData >= 5000 ? true : false,
+      points: 900,
+    },
+    {
+      name: "10000 steps",
+      steps: 10000,
+      img: require("../../assets/Badges_Daily_5000.png"),
+      unlocked: stepData >= 10000 ? true : false,
+      points: 1200,
+    },
+    {
+      name: "15000 steps",
+      steps: 15000,
+      img: require("../../assets/Badges_Daily.png"),
+      unlocked: stepData >= 15000 ? true : false,
+      points: 1500,
+    },
+    {
+      name: "20000 steps",
+      steps: 20000,
+      img: require("../../assets/Badges_Daily_10_Floors-300x300.png"),
+      unlocked: stepData >= 20000 ? true : false,
+      points: 1800,
+    },
+    {
+      name: "40000 steps",
+      steps: 40000,
+      img: require("../../assets/Badges_Daily_65000_Steps-300x300.png"),
+      unlocked: stepData >= 40000 ? true : false,
+      points: 2100,
+    },
+    {
+      name: "60000 steps",
+      steps: 60000,
+      img: require("../../assets/Badges_Lifetime_8000_Miles-300x300.png"),
+      unlocked: stepData >= 60000 ? true : false,
+      points: 2400,
+    },
+    {
+      name: "85000 steps",
+      steps: 85000,
+      img: require("../../assets/Badges_Daily_55000_Steps-300x300.png"),
+      unlocked: stepData >= 85000 ? true : false,
+      points: 2700,
+    },
+    {
+      name: "90000 steps",
+      steps: 90000,
+      img: require("../../assets/Badges_Daily_90000_Steps-300x300.png"),
+      unlocked: stepData >= 90000 ? true : false,
+      points: 3000,
+    },
+    {
+      name: "70000 steps",
+      steps: 70000,
+      img: require("../../assets/Badges_Daily_70000_Steps-300x300.png"),
+      unlocked: stepData >= 70000 ? true : false,
+      points: 3300,
+    },
+    {
+      name: "100000 steps",
+      steps: 100000,
+      img: require("../../assets/Badges_Daily_40000_Steps-300x300.png"),
+      unlocked: stepData >= 100000 ? true : false,
+      points: 3600,
+    },
+  ];
+
   useEffect(() => {
     const backAction = () => {
       navigation.navigate("Goal");
@@ -44,6 +127,7 @@ export default function Activity({ route, navigation }) {
 
     return () => backHandler.remove();
   }, []);
+
   const insets = useSafeAreaInsets();
   return (
     <SafeAreaProvider>
@@ -56,16 +140,23 @@ export default function Activity({ route, navigation }) {
                 backgroundColor: "white",
                 borderBottomWidth: 1,
                 borderBottomColor: "rgb(216,216,216)",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Avatar.Image
-                size={35}
+                size={40}
                 source={require("../../assets/avatar.png")}
-                style={{ borderWidth: 1 }}
+                style={{ flex: 1, backgroundColor: "white" }}
               />
-              <Appbar.Content title="Bfit" />
+              <Appbar.Content
+                title="FitTrack"
+                style={{ flex: 1 }}
+                titleStyle={{ color: "#89888F" }}
+              />
+              <Points />
             </Appbar.Header>
-            {/* <Text>{route.params.paramKey}</Text> */}
             <Tab.Navigator
               screenOptions={{
                 tabBarStyle: { color: "#1abc9c" },
@@ -73,9 +164,12 @@ export default function Activity({ route, navigation }) {
                 tabBarInactiveTintColor: "#7db3a8",
                 headerTitleAlign: "center",
                 headerStyle: {
-                  shadowColor: "none",
+                  shadowColor: "transparent",
                   elevation: 0,
-                  shadowOffset: "none",
+                  shadowOffset: {
+                    width: 0,
+                    height: 0,
+                  },
                 },
                 // headerShown:false
               }}
@@ -91,26 +185,22 @@ export default function Activity({ route, navigation }) {
                         fontSize: 13,
                       }}
                     >
-                      History
+                      LeaderBoard
                     </Text>
                   ),
                   tabBarIcon: ({ focused }) => (
-                    <FontAwesome
-                      name="history"
+                    <MaterialIcons
+                      name="leaderboard"
                       size={focused ? 34 : 24}
                       color={focused ? "#00B9FE" : "#89888F"}
                     />
                   ),
                 }}
-                name="History"
-                component={StepCounter}
-                listeners={{
-                  tabPress: (e) => {
-                    // Prevent default action
-                    e.preventDefault();
-                  },
-                }}
-              />
+                name="Leaderboard"
+                //component={LeaderBoard}
+              >
+                {() => <LeaderBoard />}
+              </Tab.Screen>
               <Tab.Screen
                 options={{
                   tabBarLabel: ({ focused }) => (
@@ -135,8 +225,15 @@ export default function Activity({ route, navigation }) {
                 name="Walk"
                 // component={StepCounter}
               >
-                {() => <StepCounter goal={route.params.paramKey} />}
+                {() => (
+                  <StepCounter
+                    setStepData={setStepData}
+                    stepdData={0}
+                    badges={badges}
+                  />
+                )}
               </Tab.Screen>
+
               <Tab.Screen
                 options={{
                   tabBarLabel: ({ focused }) => (
@@ -146,27 +243,22 @@ export default function Activity({ route, navigation }) {
                         fontSize: 13,
                       }}
                     >
-                      Setting
+                      Badges
                     </Text>
                   ),
                   tabBarIcon: ({ focused }) => (
-                    <Ionicons
-                      name="settings"
+                    <MaterialCommunityIcons
+                      name="police-badge"
                       size={focused ? 34 : 24}
                       color={focused ? "#00B9FE" : "#89888F"}
                     />
                   ),
                 }}
-                name="Setting"
-                component={StepCounter}
-                listeners={{
-                  tabPress: (e) => {
-                    // Prevent default action
-                    e.preventDefault();
-                  },
-                }}
-              />
-              {/* <Tab.Screen
+                name="Badges"
+              >
+                {() => <Badges stepData={stepData} badges={badges} />}
+              </Tab.Screen>
+              <Tab.Screen
                 options={{
                   tabBarLabel: ({ focused }) => (
                     <Text
@@ -189,9 +281,8 @@ export default function Activity({ route, navigation }) {
                 name="Comunity"
                 // component={()=> <StepCounter goal={route.params.paramKey} />}
               >
-                  {() => <StepCounter goal={route.params.paramKey} />}
-
-              </Tab.Screen> */}
+                {() => <Community />}
+              </Tab.Screen>
             </Tab.Navigator>
             <StatusBar />
           </PaperProvider>
@@ -200,11 +291,3 @@ export default function Activity({ route, navigation }) {
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

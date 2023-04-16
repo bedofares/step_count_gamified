@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "step_count",
-    "slug": "step_count",
+    "name": "step_count_gamfied",
+    "slug": "step_count_gamfied",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,14 +23,15 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.stepcounter.StepTrack"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "11f900ff-f0d6-4e13-b674-2a6e798e43b4"
+        "projectId": "73ac2605-d730-415e-a532-568329f52617"
       }
     }
   }

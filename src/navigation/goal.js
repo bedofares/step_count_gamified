@@ -1,11 +1,25 @@
-import React, { useState,useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, BackHandler,Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  BackHandler,
+  Alert,
+} from "react-native";
 import { Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
+import { useDispatch,useSelector } from "react-redux";
+import {
+  increamentGoal,
+  decrementGoal,
+} from "../feature/stepCounter/stepCounterSlice";
 
 export default function Goal({ navigation }) {
-  const [goal, setGoal] = useState(10000);
+  //const [goal, setGoal] = useState(10000);
+  const goal = useSelector((state) => state.stepCounter.goal)
+  const dispatch = useDispatch();
   useEffect(() => {
     const backAction = () => {
       Alert.alert("Hold on!", "Are you sure you want to go back?", [
@@ -64,7 +78,8 @@ export default function Goal({ navigation }) {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() =>
-              setGoal((prevGoal) => (prevGoal <= 0 ? 0 : prevGoal - 50))
+              //setGoal((prevGoal) => (prevGoal <= 0 ? 0 : prevGoal - 50))
+              dispatch(decrementGoal(50))
             }
             style={{ flex: 1 }}
           >
@@ -89,7 +104,8 @@ export default function Goal({ navigation }) {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() =>
-              setGoal((prevGoal) => (prevGoal + 50))
+              //setGoal((prevGoal) => prevGoal + 50)
+              dispatch(increamentGoal(50))
             }
             style={{ flex: 1 }}
           >

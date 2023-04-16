@@ -1,10 +1,10 @@
 import React from "react";
+import { store } from "./src/app/store";
+import { Provider } from "react-redux";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { Provider as PaperProvider, Appbar, Avatar } from "react-native-paper";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import StepCounter from "./src/Components/stepCounter";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Goal from "./src/navigation/goal";
@@ -14,6 +14,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+    <Provider store={store}>
     <PaperProvider>
       <SafeAreaProvider>
         <SafeAreaView edges={["left", "right"]} style={{ flex: 1 }}>
@@ -39,6 +40,7 @@ export default function App() {
         </SafeAreaView>
       </SafeAreaProvider>
     </PaperProvider>
+    </Provider>
   );
 }
 
