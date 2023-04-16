@@ -135,7 +135,6 @@ export default function StepCounter({ setStepData, badges }) {
       setCurrentStepCount(goal);
     }
     // loop through the badges array and check if a badge is unlocked
-    if(currentStepCount != 1000){
     for (let i = 0; i < badges.length; i++) {
       if (currentStepCount >= badges[i].steps && !badges[i].unlocked) {
         badges[i].unlocked = true; // mark the badge as unlocked
@@ -146,7 +145,6 @@ export default function StepCounter({ setStepData, badges }) {
         setPoint(badges[i].points);
         showModal();
       }
-    }
     }
     setStepData(currentStepCount);
     setDistanceTravled((currentStepCount / 1300).toFixed(1));
