@@ -7,11 +7,6 @@ export default function LeaderBoard() {
   const points = useSelector((state) => state.stepCounter.points);
   const rank = [
     {
-      name: "Ben",
-      points: 12000,
-      img: require("../../assets/profile.jpg"),
-    },
-    {
       name: "kingchris",
       points: 6000,
       img: require("../../assets/profile2.jpg"),
@@ -96,15 +91,15 @@ export default function LeaderBoard() {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              borderWidth: 1,
+              //borderWidth: 1,
+              borderBottomWidth: index === rank.length - 1 ? 0 : 1, // Set borderBottomWidth to 0 for last item
               borderRadius: 10,
               padding: 10,
               marginTop: 5,
+              marginBottom: index === rank.length - 1 ? 10 : 5, // Set marginBottom to 10 for last item
               borderColor: "rgb(216,216,216)",
               elevation: 1,
-              //shadowColor: "#000",
               backgroundColor: "white",
-              //shadowRadius: 0,
             }}
           >
             <Text>{item.rank}</Text>

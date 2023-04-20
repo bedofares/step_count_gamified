@@ -2,77 +2,15 @@ import React, { useState } from "react";
 import { Text, View, Image, Pressable, ScrollView } from "react-native";
 import { Avatar, Card } from "react-native-paper";
 import { Foundation, AntDesign } from "@expo/vector-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { incrementLikes } from "../feature/stepCounter/stepCounterSlice";
 
 export default function Popular() {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      userName: "Jeremy",
-      time: "1h",
-      message:
-        "Good moring everyone happy friday have a great day and weekend.",
-      imageSource: require("../../assets/share1.png"),
-      likes: 10,
-      comments: 5,
-      avatarSource: require("../../assets/profile.jpg"),
-    },
-    {
-      id: 2,
-      userName: "James",
-      time: "2h",
-      message: "Have a nice day everyone! I just earned my first badge",
-      imageSource: require("../../assets/share.png"),
-      likes: 15,
-      comments: 2,
-      avatarSource: require("../../assets/profile10.jpg"),
-    },
-    {
-      id: 3,
-      userName: "Kingchris",
-      time: "3h",
-      message: "What a sunny day for a run.",
-      imageSource: require("../../assets/share2.jpg"),
-      likes: 8,
-      comments: 0,
-      avatarSource: require("../../assets/profile2.jpg"),
-    },
-    {
-      id: 4,
-      userName: "Paul",
-      time: "4h",
-      message:
-        "Nothing is better than eraning a new badge . Have a nice day everyone",
-      imageSource: require("../../assets/share3.png"),
-      likes: 20,
-      comments: 7,
-      avatarSource: require("../../assets/profile4.jpg"),
-    },
-  ]);
-  const [likedPosts, setLikedPosts] = useState([]);
+  const posts = useSelector((state) => state.stepCounter.posts);
+  const dispatch = useDispatch();
 
   const handleLike = (postId) => {
-    // Check if postId is already in likedPosts array
-    if (likedPosts.includes(postId)) {
-      // If postId is already liked, remove it from likedPosts array
-      setLikedPosts(likedPosts.filter((id) => id !== postId));
-
-      // Update the likes count of the corresponding post
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post.id === postId ? { ...post, likes: post.likes - 1 } : post
-        )
-      );
-    } else {
-      // If postId is not liked, add it to likedPosts array
-      setLikedPosts([...likedPosts, postId]);
-
-      // Update the likes count of the corresponding post
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post.id === postId ? { ...post, likes: post.likes + 1 } : post
-        )
-      );
-    }
+    dispatch(incrementLikes(postId));
   };
   const LeftContent = ({ avatarSource }) => (
     <Avatar.Image
@@ -140,7 +78,7 @@ export default function Popular() {
                 <AntDesign
                   name="heart"
                   size={20}
-                  color={likedPosts.includes(post.id) ? "red" : "#c2c1c7"}
+                  color={post.liked?"red":"#c2c1c7"}
                   //style={{padding:10,borderWidth:1,color:'red'}}
                   onPress={() => handleLike(post.id)}
                 />
@@ -159,7 +97,7 @@ export default function Popular() {
               >
                 <Foundation name="comment" size={20} color="#c2c1c7" />
                 <Text style={{ marginLeft: 5, color: "#c2c1c7", fontSize: 20 }}>
-                  {post.likes}
+                  {post.comment}
                 </Text>
               </View>
             </Card.Actions>

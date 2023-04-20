@@ -1,10 +1,27 @@
-import { View, Text, ScrollView, Pressable, Button } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  Image,
+  Pressable,
+} from "react-native";
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import { Avatar, Modal, Portal } from "react-native-paper";
 import { AntDesign, FontAwesome, Entypo } from "@expo/vector-icons";
 
+import {
+  addPost,
+} from "../feature/stepCounter/stepCounterSlice";
+
 export default function Badges({ badges }) {
   const [visible, setVisible] = useState(Array(badges.length).fill(false));
+  const [text, onChangeText] = useState("");
+  const [share, setShare] = useState(false);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const showModal = (index) => {
     const newVisible = [...visible];
@@ -16,10 +33,13 @@ export default function Badges({ badges }) {
     const newVisible = [...visible];
     newVisible[index] = false;
     setVisible(newVisible);
+    setShare(false)
+    onChangeText("")
   };
   const containerStyle = {
     backgroundColor: "white",
-    height: "100%",
+    //height: "50%",
+    width: "95%",
     //shadowColor: "transparent",
     shadowOpacity: 0,
     shadowOpacity: 0,
@@ -29,7 +49,7 @@ export default function Badges({ badges }) {
       width: 0,
       height: 0,
     },
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
   };
 
@@ -151,13 +171,13 @@ export default function Badges({ badges }) {
                 <Modal
                   theme={{
                     colors: {
-                      backdrop: "white",
+                      backdrop: "rgba(0,0,0,0.3)",
                     },
                   }}
                   visible={visible[index]} // Update visibility based on the state
                   onDismiss={() => hideModal(index)}
                   contentContainerStyle={containerStyle}
-                  //style={{borderWidth:1}}
+                  style={{ alignItems: "center" }}
                 >
                   <AntDesign
                     name="close"
@@ -166,99 +186,196 @@ export default function Badges({ badges }) {
                     style={{ position: "absolute", left: 10, top: 10 }}
                     onPress={() => hideModal(index)}
                   />
-                  <Avatar.Image
-                    size={120}
-                    source={item.img}
-                    style={{
-                      backgroundColor: "white",
-                      opacity: 1,
-                      marginTop: 250,
-                    }}
-                  />
-                  <Text
-                    style={{
-                      marginTop: 10,
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      fontSize: 20,
-                    }}
-                  >
-                    Congratulations!{"\n"} you just got a new badge.
-                  </Text>
-                  <Text style={{ marginTop: 10 }}>
-                    You just got a new badge "{item.steps} steps" badge{" "}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: "bold",
-                      color: "black",
-                      marginTop: 5,
-                      //textAlign: "center",
-                    }}
-                  >
-                    Points earned : +{item.points}
-                  </Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      backgroundColor: "white",
-                      paddingTop: 20,
-                    }}
-                  >
-                    <View
-                      style={{
-                        backgroundColor: "#89888F",
-                        height: 2,
-                        flex: 1,
-                        alignSelf: "center",
+                  {share ? (
+                    <Pressable
+                      onPress={() => {
+                        dispatch(
+                          addPost({
+                            userName: "User",
+                            time: "0m",
+                            message: text,
+                            imageSource: item.rewardImg,
+                            likes: 0,
+                            comments: 0,
+                            avatarSource: require("../../assets/avatar.png"),
+                            liked: false,
+                          }),
+                          hideModal(index),
+                          navigation.navigate("Community")
+                        );
                       }}
-                    />
-                    <Text
-                      style={{
-                        paddingHorizontal: 0,
-                        fontSize: 15,
-                        color: "#89888F",
-                        textAlign: "center",
-                        flex: 1,
-                      }}
+                      style={{ position: "absolute", right: 20, top: 10 }}
                     >
-                      SHARE MY ACHIEVEMENT
-                    </Text>
-                    <View
-                      style={{
-                        backgroundColor: "#89888F",
-                        height: 2,
-                        flex: 1,
-                        alignSelf: "center",
-                      }}
-                    />
-                  </View>
-                  <View style={{ flexDirection: "row", marginTop: 15 }}>
-                    <FontAwesome
-                      name="group"
-                      size={30}
-                      color="black"
-                      style={{ marginRight: 15 }}
-                    />
-                    <Entypo
-                      name="facebook-with-circle"
-                      size={30}
-                      color="#3b5998"
-                      style={{ marginRight: 15 }}
-                    />
-                    <FontAwesome
-                      name="whatsapp"
-                      size={30}
-                      color="#075E54"
-                      style={{ marginRight: 15 }}
-                    />
-                    <Entypo
-                      name="twitter-with-circle"
-                      size={30}
-                      color="#00acee"
-                    />
-                  </View>
+                      <Text
+                        style={{
+                          padding: 5,
+                          paddingHorizontal: 15,
+                          backgroundColor: "#00B9FE",
+                          color: "white",
+                        }}
+                      >
+                        Post
+                      </Text>
+                    </Pressable>
+                  ) : (
+                    ""
+                  )}
+                  {!share ? (
+                    <>
+                      <Avatar.Image
+                        size={120}
+                        source={item.img}
+                        style={{
+                          backgroundColor: "white",
+                          opacity: 1,
+                          marginTop: 20,
+                        }}
+                      />
+                      <Text
+                        style={{
+                          marginTop: 10,
+                          textAlign: "center",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                        }}
+                      >
+                        Congratulations!{"\n"} you just got a new badge.
+                      </Text>
+                      <Text style={{ marginTop: 10 }}>
+                        You just got a new badge "{item.steps} steps" badge{" "}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: "bold",
+                          color: "black",
+                          marginTop: 5,
+                          //textAlign: "center",
+                        }}
+                      >
+                        Points earned : +{item.points}
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          backgroundColor: "white",
+                          paddingTop: 20,
+                        }}
+                      >
+                        <View
+                          style={{
+                            backgroundColor: "#89888F",
+                            height: 2,
+                            flex: 1,
+                            alignSelf: "center",
+                          }}
+                        />
+                        <Text
+                          style={{
+                            paddingHorizontal: 0,
+                            fontSize: 15,
+                            color: "#89888F",
+                            textAlign: "center",
+                            flex: 1,
+                          }}
+                        >
+                          SHARE MY ACHIEVEMENT
+                        </Text>
+                        <View
+                          style={{
+                            backgroundColor: "#89888F",
+                            height: 2,
+                            flex: 1,
+                            alignSelf: "center",
+                          }}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          marginTop: 15,
+                          marginBottom: 15,
+                        }}
+                      >
+                        <FontAwesome
+                          name="group"
+                          size={30}
+                          color="black"
+                          style={{ marginRight: 15 }}
+                          onPress={() => {
+                            setShare(true);
+                          }}
+                        />
+                        <Entypo
+                          name="facebook-with-circle"
+                          size={30}
+                          color="#3b5998"
+                          style={{ marginRight: 15 }}
+                        />
+                        <FontAwesome
+                          name="whatsapp"
+                          size={30}
+                          color="#075E54"
+                          style={{ marginRight: 15 }}
+                        />
+                        <Entypo
+                          name="twitter-with-circle"
+                          size={30}
+                          color="#00acee"
+                        />
+                      </View>
+                    </>
+                  ) : (
+                    <>
+                      <View
+                        style={{
+                          marginTop: 50,
+                          flexDirection: "column",
+                          width: "100%",
+                        }}
+                      >
+                        <View style={{}}>
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              padding: 10,
+                            }}
+                          >
+                            <Avatar.Image
+                              size={40}
+                              source={require("../../assets/avatar.png")}
+                              style={{ backgroundColor: "white" }}
+                            />
+                            <Text style={{ fontWeight: "bold" }}>User</Text>
+                          </View>
+                          <TextInput
+                            style={{
+                              marginBottom: 10,
+                              borderBottomColor: "rgb(216,216,216)",
+                              borderBottomWidth: 1,
+                              padding: 5,
+                              paddingLeft: 15,
+                              fontSize: 18,
+                            }}
+                            onChangeText={onChangeText}
+                            value={text}
+                            placeholder="What are you up to ?"
+                          />
+                        </View>
+                        <Image
+                          style={{
+                            width: 250,
+                            height: 200,
+                            alignSelf: "center",
+                            borderBottomWidth: 1,
+                            marginBottom: 20,
+                          }}
+                          source={item.rewardImg}
+                        />
+                      </View>
+                    </>
+                  )}
                 </Modal>
               </Portal>
               <Pressable

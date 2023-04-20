@@ -19,7 +19,6 @@ import {
   MaterialIcons,
   FontAwesome5,
   FontAwesome,
-  Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 
@@ -29,23 +28,26 @@ export default function Activity({ navigation }) {
   const [stepData, setStepData] = useState(0);
   const badges = [
     {
-      name: "1000 steps",
-      steps: 1000,
+      name: "100 steps",
+      steps: 100,
+      rewardImg:require("../../assets/Bagde1reward.png"),
       img: require("../../assets/fitbit.jpg"),
-      unlocked: stepData >= 1000 ? true : false,
+      unlocked: stepData >= 100 ? true : false,
       points: 300,
     },
     {
-      name: "3000 steps",
-      steps: 3000,
+      name: "200 steps",
+      steps: 200,
       img: require("../../assets/badges-daily-100000.png"),
-      unlocked: stepData >= 3000 ? true : false,
+      rewardImg:require("../../assets/Badge2reward.png"),
+      unlocked: stepData >= 200 ? true : false,
       points: 600,
     },
     {
       name: "5000 steps",
       steps: 5000,
       img: require("../../assets/Badges_Daily_35000.png"),
+      rewardImg:require("../../assets/Badge3reward.png"),
       unlocked: stepData >= 5000 ? true : false,
       points: 900,
     },
@@ -53,6 +55,7 @@ export default function Activity({ navigation }) {
       name: "10000 steps",
       steps: 10000,
       img: require("../../assets/Badges_Daily_5000.png"),
+      rewardImg:require("../../assets/Badge4reward.png"),
       unlocked: stepData >= 10000 ? true : false,
       points: 1200,
     },
@@ -171,10 +174,9 @@ export default function Activity({ navigation }) {
                     height: 0,
                   },
                 },
-                // headerShown:false
+                headerShown:false
               }}
               initialRouteName="Walk"
-              // sceneContainerStyle={{ backgroundColor: "#1abc9c" }}
             >
               <Tab.Screen
                 options={{
@@ -230,6 +232,7 @@ export default function Activity({ navigation }) {
                     setStepData={setStepData}
                     stepdData={0}
                     badges={badges}
+                    //navigation={navigation}
                   />
                 )}
               </Tab.Screen>
@@ -278,8 +281,7 @@ export default function Activity({ navigation }) {
                     />
                   ),
                 }}
-                name="Comunity"
-                // component={()=> <StepCounter goal={route.params.paramKey} />}
+                name="Community"
               >
                 {() => <Community />}
               </Tab.Screen>

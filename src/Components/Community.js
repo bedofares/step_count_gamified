@@ -45,6 +45,7 @@ const Following = () => {
 export default function Community() {
   return (
     <Tab.Navigator
+    initialRouteName="Popular"
       screenOptions={{
         tabBarIndicatorStyle: {
           backgroundColor: "#00B9FE",

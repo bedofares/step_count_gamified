@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -17,7 +17,6 @@ import {
 } from "../feature/stepCounter/stepCounterSlice";
 
 export default function Goal({ navigation }) {
-  //const [goal, setGoal] = useState(10000);
   const goal = useSelector((state) => state.stepCounter.goal)
   const dispatch = useDispatch();
   useEffect(() => {
@@ -79,7 +78,7 @@ export default function Goal({ navigation }) {
             activeOpacity={0.5}
             onPress={() =>
               //setGoal((prevGoal) => (prevGoal <= 0 ? 0 : prevGoal - 50))
-              dispatch(decrementGoal(50))
+              dispatch(decrementGoal(300))
             }
             style={{ flex: 1 }}
           >
@@ -105,7 +104,7 @@ export default function Goal({ navigation }) {
             activeOpacity={0.5}
             onPress={() =>
               //setGoal((prevGoal) => prevGoal + 50)
-              dispatch(increamentGoal(50))
+              dispatch(increamentGoal(300))
             }
             style={{ flex: 1 }}
           >
